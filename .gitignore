@@ -1,0 +1,4 @@
+test-reports/
+*.html
+linux-diagnostic-*.txt
+.DS_Store
