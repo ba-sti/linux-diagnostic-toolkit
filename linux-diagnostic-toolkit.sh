@@ -3,7 +3,7 @@
 # Copyright (c) 2026. MIT License.
 set -uo pipefail
 export LC_ALL=C
-VERSION=1.0.0
+VERSION=1.0.1
 LANG_UI=de
 NO_COLOR=0
 REPORT_DIR="${HOME:-/tmp}/linux-diagnostic-reports"
@@ -110,6 +110,26 @@ run_one() {
  esac
  printf '[%2d/45] %-42s %s\n' "$id" "$name" "${LEVELS[id]}"
 }
+# In interactive menu mode show the raw command output before returning.
+show_check_details() {
+ local id=$1 name
+ if [[ "$LANG_UI" == en ]]; then name=${TITLES[id]%%|*}; else name=${TITLES[id]#*|}; fi
+ printf '\n============================================================\n'
+ printf '%02d - %s [%s]\n' "$id" "$name" "${LEVELS[id]}"
+ printf '============================================================\n'
+ printf '%s\n' "${OUTPUTS[id]}"
+}
+pause_menu() {
+ local prompt
+ prompt=$(msg 'Beliebige Taste drücken, um zum Menü zurückzukehren ...' 'Press any key to return to the menu ...')
+ printf '\n%s' "$prompt"
+ if [[ -r /dev/tty ]]; then
+  IFS= read -r -s -n 1 < /dev/tty || true
+ elif [[ -t 0 ]]; then
+  IFS= read -r -s -n 1 || true
+ fi
+ printf '\n'
+}
 html_escape() { local s=$1; s=${s//&/\&amp;}; s=${s//</\&lt;}; s=${s//>/\&gt;}; s=${s//\"/\&quot;}; printf '%s' "$s"; }
 save_reports() {
  local do_txt=$1 do_html=$2 stamp host base i name verdict c green=0 yellow=0 red=0 na=0
@@ -180,9 +200,9 @@ main() {
   printf '\n A = %s | Q = %s\n' "$(msg 'Komplettcheck' 'Run all checks')" "$(msg 'Beenden' 'Quit')"
   read -r -p '> ' choice || break
   case "$choice" in
-   a|A) local i; for ((i=1;i<=COMMAND_COUNT;i++)); do run_one "$i"; done; save_reports "$txt" "$html";;
+   a|A) local i; for ((i=1;i<=COMMAND_COUNT;i++)); do run_one "$i"; done; save_reports "$txt" "$html"; pause_menu;;
    q|Q) break;;
-   *) if [[ "$choice" =~ ^[0-9]+$ ]] && ((10#$choice>=1 && 10#$choice<=COMMAND_COUNT)); then run_one "$((10#$choice))"; save_reports "$txt" "$html"; else echo "Invalid / Ungültig"; fi;;
+   *) if [[ "$choice" =~ ^[0-9]+$ ]] && ((10#$choice>=1 && 10#$choice<=COMMAND_COUNT)); then run_one "$((10#$choice))"; show_check_details "$((10#$choice))"; save_reports "$txt" "$html"; pause_menu; else echo "Invalid / Ungültig"; pause_menu; fi;;
   esac
  done
 }
