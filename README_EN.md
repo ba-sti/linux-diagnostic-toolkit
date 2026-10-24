@@ -1,5 +1,9 @@
 # Linux Diagnostic Toolkit
 
+### Interactive terminal output (since v1.0.1)
+Choosing an individual check in the interactive menu prints its **full commands and results to the terminal**. The program saves TXT/HTML reports and waits for a keypress before returning to the menu. The menu full scan shows its summary and waits for a keypress too. Command-line `--check` and `--all` remain non-interactive for automation.
+
+
 A menu-driven, mostly distribution-independent Bash tool for **read-only** Linux diagnostics. Inspired by the Windows Diagnostic Toolkit. **45 diagnostic checks**, single or full run, TXT/HTML reports, and basic statuses (GREEN/YELLOW/RED/N/A).
 
 ## Supported systems
