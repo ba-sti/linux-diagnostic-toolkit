@@ -1,5 +1,9 @@
 # Linux Diagnostic Toolkit
 
+### Interaktive Konsolenausgabe (ab v1.0.1)
+Bei der Auswahl einer einzelnen Nummer im interaktiven Menü erscheinen die **vollständigen Befehle und ihre Ausgaben direkt im Terminal**. Nach dem Speichern der TXT-/HTML-Berichte wartet das Programm auf eine beliebige Taste, bevor das Menü zurückkehrt. Der Menü-Komplettcheck zeigt die Ergebnisübersicht und wartet ebenfalls auf einen Tastendruck. Kommandozeilenaufrufe mit `--check` oder `--all` bleiben für Automatisierung ohne Tastaturpause.
+
+
 Ein menügesteuertes, weitgehend distributionsunabhängiges Bash-Werkzeug zur **lesenden** Diagnose von Linux-Systemen. Inspiriert vom Windows Diagnostic Toolkit. **45 Diagnosepunkte**, Einzel- oder Gesamtausführung, TXT-/HTML-Report und eine einfache Statusbewertung (GREEN/YELLOW/RED/N/A).
 
 ## Unterstützte Systeme
